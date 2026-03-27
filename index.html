@@ -10,17 +10,16 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #0b0e14;
             color: #f9f9f9;
-            margin: 0 auto; /* Centraliza em telas muito grandes */
+            margin: 0 auto; 
             padding: 15px; 
             overflow-x: hidden;
-            max-width: 100%; /* Padrão Mobile */
+            max-width: 100%; 
         }
 
-        /* --- RESPONSIVIDADE PARA NOTEBOOKS E MONITORES (PC) --- */
         @media (min-width: 768px) {
             body { 
                 padding: 40px; 
-                max-width: 1400px; /* Limite máximo para não esticar em monitores ultrawide */
+                max-width: 1400px; 
             }
         }
 
@@ -40,39 +39,40 @@
 
         h2.section-title {
             font-size: 1.3rem;
-            margin: 30px 0 15px 0;
+            margin: 40px 0 15px 0;
             color: #cacaca;
             border-left: 4px solid #3498db;
             padding-left: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         @media (min-width: 768px) {
             h2.section-title { font-size: 1.6rem; margin: 50px 0 25px 0; }
         }
 
-        /* --- GALERIA TOPO (CARROSSEL COM SWIPE) --- */
+        /* --- GALERIA TOPO (CARROSSEL) --- */
         .hero-container {
             position: relative;
             width: 100%;
-            height: 340px; /* Altura Mobile */
+            height: 340px;
             border-radius: 12px;
             overflow: hidden;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
             background: #1e212d;
             touch-action: pan-y; 
-            cursor: grab; /* Indica que pode ser arrastado no PC */
+            cursor: grab;
         }
 
-        .hero-container:active {
-            cursor: grabbing;
-        }
+        .hero-container:active { cursor: grabbing; }
 
         @media (min-width: 768px) {
             .hero-container { 
-                height: 480px; /* Altura Maior no Notebook */
+                height: 480px; 
                 border-radius: 16px;
-                margin-bottom: 40px;
+                margin-bottom: 30px;
             }
         }
 
@@ -92,7 +92,7 @@
             text-decoration: none;
             color: white;
             display: block;
-            user-select: none; /* Evita selecionar a imagem ao arrastar no PC */
+            user-select: none; 
             -webkit-user-drag: none;
         }
 
@@ -101,7 +101,7 @@
             height: 100%;
             object-fit: cover;
             opacity: 0.6;
-            pointer-events: none; /* Previne bugs de drag no PC */
+            pointer-events: none; 
         }
 
         .hero-overlay {
@@ -148,13 +148,9 @@
         }
 
         @media (min-width: 768px) {
-            .hero-title { 
-                font-size: 2.5rem; /* Título gigante no PC */
-                max-width: 80%; /* Para não encostar muito na borda direita */
-            }
+            .hero-title { font-size: 2.5rem; max-width: 80%; }
         }
 
-        /* Indicadores (Bolinhas) */
         .hero-dots {
             position: absolute;
             bottom: 15px;
@@ -185,42 +181,6 @@
             border-radius: 4px;
         }
 
-        /* --- FILTROS (BOTÕES) --- */
-        .filtros {
-            display: flex;
-            overflow-x: auto; 
-            gap: 10px;
-            margin-bottom: 20px;
-            padding-bottom: 5px;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        .filtros::-webkit-scrollbar { display: none; }
-
-        .btn-filtro {
-            background-color: #1e212d;
-            color: #bdc3c7;
-            border: 1px solid #2b2f3e;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.8rem;
-            white-space: nowrap; 
-            transition: all 0.3s ease;
-        }
-
-        @media (min-width: 768px) {
-            .filtros { gap: 15px; margin-bottom: 30px; }
-            .btn-filtro { padding: 10px 20px; font-size: 1rem; }
-        }
-
-        .btn-filtro:hover, .btn-filtro.ativo {
-            background-color: #3498db;
-            color: #fff;
-            border-color: #2980b9;
-        }
-
         /* --- GRIDS (CATÁLOGOS) --- */
         .grid-noticias {
             display: grid;
@@ -236,11 +196,11 @@
 
         @media (min-width: 768px) {
             .grid-noticias { 
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Cards mais largos no PC */
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
                 gap: 25px; 
             }
             .grid-podcasts { 
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Podcasts maiores no PC */
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
                 gap: 20px; 
             }
         }
@@ -265,7 +225,7 @@
 
         @media (min-width: 768px) {
             .tile:hover {
-                transform: translateY(-8px); /* Levanta mais no PC */
+                transform: translateY(-8px); 
                 box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
                 z-index: 10;
             }
@@ -295,13 +255,11 @@
             z-index: 1;
         }
 
-        /* --- EFEITO: FROSTED GLASS INFERIOR COM LOGO --- */
+        /* --- EFEITO: FROSTED GLASS INFERIOR --- */
         .fonte-frosted {
             position: absolute;
-            bottom: 0; 
-            left: 0;
-            width: 100%;
-            height: 50%;
+            bottom: 0; left: 0;
+            width: 100%; height: 50%;
             background: rgba(11, 14, 20, 0.5); 
             backdrop-filter: blur(4px); 
             -webkit-backdrop-filter: blur(4px);
@@ -363,7 +321,7 @@
         }
 
         @media (min-width: 768px) {
-            .tile-content { padding: 18px; } /* Mais respiro interno nos cards no PC */
+            .tile-content { padding: 18px; } 
         }
 
         .tile.noticia .tile-content h3 {
@@ -404,7 +362,6 @@
 
     <h1>📈 Terminal de Mercados</h1>
 
-    <!-- Galeria Principal (Carrossel com Swipe Real para Mouse e Touch) -->
     <div class="hero-container" id="hero-gallery">
         <div class="hero-track" id="hero-track">
             <div style="padding: 30px; color: #7f8c8d; width: 100%; text-align: center; margin-top: 100px;">
@@ -414,35 +371,38 @@
         <div class="hero-dots" id="hero-dots"></div>
     </div>
 
-    <!-- Filtros -->
-    <div class="filtros">
-        <button class="btn-filtro ativo" onclick="filtrarNoticias('tudo')">Visão Global</button>
-        <button class="btn-filtro" onclick="filtrarNoticias('pt')">🇧🇷 Ações & BR</button>
-        <button class="btn-filtro" onclick="filtrarNoticias('en')">🇺🇸 Wall Street & Cripto</button>
+    <h2 class="section-title">🇧🇷 Mercado Nacional</h2>
+    <div id="grid-noticias-pt" class="grid-noticias">
+        <p class="loading">Sincronizando agências do Brasil...</p>
     </div>
 
-    <!-- Seção de Notícias (16:9) -->
-    <h2 class="section-title">Últimas Atualizações</h2>
-    <div id="grid-noticias" class="grid-noticias">
-        <p class="loading">Sincronizando com agências financeiras...</p>
+    <h2 class="section-title">🇺🇸 Wall Street & Cripto</h2>
+    <div id="grid-noticias-en" class="grid-noticias">
+        <p class="loading">Sincronizando agências internacionais...</p>
     </div>
 
-    <!-- Seção de Podcasts (1:1) -->
-    <h2 class="section-title">Podcasts Essenciais</h2>
+    <h2 class="section-title">🎧 Podcasts Essenciais</h2>
     <div id="grid-podcasts" class="grid-podcasts">
-        <!-- Renderizado via JS -->
-    </div>
+        </div>
 
     <script>
-        // --- 1. CONFIGURAÇÃO DE FEEDS ---
+        // --- 1. SUPER LISTA DE FEEDS DE MERCADO ---
         const feeds = [
-            { url: 'https://www.moneytimes.com.br/feed/', lang: 'pt' },
-            { url: 'https://br.investing.com/rss/market_overview.rss', lang: 'pt' },
-            { url: 'https://finance.yahoo.com/news/rssindex', lang: 'en' },
-            { url: 'https://www.coindesk.com/arc/outboundfeeds/rss/', lang: 'en' }
+            // --- BRASIL (PT) ---
+            { url: 'https://www.moneytimes.com.br/feed/', lang: 'pt' }, // Ações e Dividendos
+            { url: 'https://br.investing.com/rss/market_overview.rss', lang: 'pt' }, // Visão de Mercado
+            { url: 'https://www.infomoney.com.br/feed/', lang: 'pt' }, // Análises InfoMoney
+            { url: 'https://g1.globo.com/rss/g1/economia/', lang: 'pt' }, // Macroeconomia BR (G1)
+            { url: 'https://br.cointelegraph.com/rss', lang: 'pt' }, // Criptomoedas BR
+
+            // --- GLOBAL (EN) ---
+            { url: 'https://finance.yahoo.com/news/rssindex', lang: 'en' }, // Top News EUA
+            { url: 'https://search.cnbc.com/rs/search/combinedcms/view.xml?profile=120000000&id=10000664', lang: 'en' }, // CNBC
+            { url: 'https://feeds.a.dj.com/rss/RSSMarketsMain.xml', lang: 'en' }, // Wall Street Journal (WSJ)
+            { url: 'https://www.coindesk.com/arc/outboundfeeds/rss/', lang: 'en' }, // Cripto (CoinDesk)
+            { url: 'https://cointelegraph.com/rss', lang: 'en' } // Cripto Global (Cointelegraph)
         ];
 
-        let todasNoticias = [];
         let heroSlidesCount = 0;
 
         const fallbackImages = [
@@ -462,6 +422,7 @@
 
         async function carregarFeeds() {
             try {
+                // Aumentamos o número de feeds, então buscamos todos em paralelo para não demorar
                 const promessas = feeds.map(feed => 
                     fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`)
                         .then(res => res.json())
@@ -471,18 +432,34 @@
                             }
                             return [];
                         })
-                        .catch(err => [])
+                        .catch(err => {
+                            console.warn('Feed temporariamente indisponível:', feed.url);
+                            return []; // Evita quebrar a aplicação se 1 site falhar
+                        })
                 );
 
                 const resultados = await Promise.all(promessas);
-                todasNoticias = resultados.flat();
+                let todasNoticias = resultados.flat();
+                
+                // Ordena rigorosamente da mais nova para a mais antiga
                 todasNoticias.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
 
                 if(todasNoticias.length > 0) {
-                    renderizarHero(todasNoticias.slice(0, 5)); 
-                    renderizarNoticias(todasNoticias.slice(5, 25), 'tudo');
+                    // Top 6 mais recentes do mundo todo vão para o Carrossel
+                    renderizarHero(todasNoticias.slice(0, 6)); 
+                    
+                    // Separa o restante por idioma
+                    const restante = todasNoticias.slice(6);
+                    const noticiasPT = restante.filter(n => n.lang === 'pt');
+                    const noticiasEN = restante.filter(n => n.lang === 'en');
+
+                    // Aumentei para 16 notícias em cada bloco para aproveitar as novas fontes
+                    renderizarGrade(noticiasPT, 'grid-noticias-pt', 16);
+                    renderizarGrade(noticiasEN, 'grid-noticias-en', 16);
+
                 } else {
-                    document.getElementById('grid-noticias').innerHTML = '<p class="loading">Não foi possível carregar as notícias.</p>';
+                    document.getElementById('grid-noticias-pt').innerHTML = '<p class="loading">Não foi possível carregar as notícias.</p>';
+                    document.getElementById('grid-noticias-en').innerHTML = '';
                     document.getElementById('hero-track').innerHTML = '';
                 }
             } catch (error) {
@@ -490,7 +467,7 @@
             }
         }
 
-        // --- 2. LÓGICA DO CARROSSEL (SUPORTA TOUCH E MOUSE NO PC) ---
+        // --- 2. LÓGICA DO CARROSSEL (TOUCH/MOUSE) ---
         let currentSlideIndex = 0;
         let touchStartX = 0;
         let touchEndX = 0;
@@ -514,9 +491,8 @@
                 slide.href = item.link;
                 slide.target = "_blank";
                 slide.className = 'hero-slide';
-                slide.draggable = false; // Evita conflito ao arrastar no PC
+                slide.draggable = false; 
                 
-                // Previne o clique de abrir o link se o usuário estava apenas arrastando
                 slide.addEventListener('click', (e) => {
                     if (isDragging) e.preventDefault();
                 });
@@ -524,7 +500,7 @@
                 slide.innerHTML = `
                     <img src="${img}" class="hero-bg" alt="Destaque">
                     <div class="hero-overlay">
-                        <span class="hero-tag">${domain} • ${item.lang === 'en' ? 'EN' : 'PT'}</span>
+                        <span class="hero-tag">${domain} • ${item.lang === 'en' ? 'GLOBAL' : 'BRASIL'}</span>
                         <h2 class="hero-title">${item.title}</h2>
                     </div>
                 `;
@@ -538,11 +514,8 @@
 
             const heroContainer = document.getElementById('hero-gallery');
             
-            // Eventos Mobile (Touch)
             heroContainer.addEventListener('touchstart', (e) => handleDragStart(e.changedTouches[0].screenX), {passive: true});
             heroContainer.addEventListener('touchend', (e) => handleDragEnd(e.changedTouches[0].screenX), {passive: true});
-
-            // Eventos PC (Mouse)
             heroContainer.addEventListener('mousedown', (e) => handleDragStart(e.screenX));
             heroContainer.addEventListener('mouseup', (e) => handleDragEnd(e.screenX));
             heroContainer.addEventListener('mouseleave', (e) => {
@@ -550,15 +523,12 @@
             });
         }
 
-        function handleDragStart(posX) {
-            touchStartX = posX;
-            isDragging = false;
-        }
-
+        function handleDragStart(posX) { touchStartX = posX; isDragging = false; }
+        
         function handleDragEnd(posX) {
             touchEndX = posX;
             handleSwipe();
-            touchStartX = 0; // Reseta para evitar loops
+            touchStartX = 0; 
         }
 
         function handleSwipe() {
@@ -566,17 +536,16 @@
             const diff = touchStartX - touchEndX;
 
             if (Math.abs(diff) > swipeThreshold) {
-                isDragging = true; // Confirma que foi um arrasto e não um clique
-                
-                if (diff > 0) { // Deslizou para a Esquerda
+                isDragging = true; 
+                if (diff > 0) { 
                     if (currentSlideIndex < heroSlidesCount - 1) irParaSlide(currentSlideIndex + 1);
                     else irParaSlide(0); 
-                } else { // Deslizou para a Direita
+                } else { 
                     if (currentSlideIndex > 0) irParaSlide(currentSlideIndex - 1);
                     else irParaSlide(heroSlidesCount - 1); 
                 }
             } else {
-                isDragging = false; // Foi apenas um clique
+                isDragging = false; 
             }
         }
 
@@ -584,25 +553,20 @@
             currentSlideIndex = index;
             const track = document.getElementById('hero-track');
             const dots = document.querySelectorAll('.dot');
-            
             track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
-            
             dots.forEach(d => d.classList.remove('active'));
             if(dots[currentSlideIndex]) dots[currentSlideIndex].classList.add('active');
         }
 
-        // --- 3. RENDERIZA O GRID DE NOTÍCIAS ---
-        function renderizarNoticias(noticias, filtro) {
-            const container = document.getElementById('grid-noticias');
+        // --- 3. RENDERIZA OS GRIDS SEPARADOS ---
+        function renderizarGrade(noticias, containerId, limite) {
+            const container = document.getElementById(containerId);
             container.innerHTML = ''; 
 
-            let lista = noticias;
-            if (filtro !== 'tudo') {
-                lista = todasNoticias.filter(n => n.lang === filtro).slice(0, 20);
-            }
+            const lista = noticias.slice(0, limite);
 
             if(lista.length === 0) {
-                container.innerHTML = '<p class="loading">Nenhuma notícia encontrada para este filtro.</p>';
+                container.innerHTML = '<p class="loading">Nenhuma notícia encontrada no momento.</p>';
                 return;
             }
 
@@ -623,6 +587,10 @@
                     domainUrl = urlObj.hostname;
                     domainText = domainUrl.replace('www.', '').split('.')[0].toUpperCase();
                 } catch(e) {}
+
+                // Truque para pegar a logo do Cointelegraph corretamente e WSJ
+                if(domainUrl.includes('cointelegraph')) domainUrl = 'cointelegraph.com';
+                if(domainUrl.includes('a.dj.com') || item.link.includes('wsj.com')) domainUrl = 'wsj.com';
 
                 const logoUrl = `https://logo.clearbit.com/${domainUrl}`;
 
@@ -645,18 +613,11 @@
                         <h3>${item.title}</h3>
                         <p class="data">
                             <span>${dataFormatada}</span>
-                            <span>${item.lang === 'en' ? '🇺🇸' : '🇧🇷'}</span>
                         </p>
                     </div>
                 `;
                 container.appendChild(tile);
             });
-        }
-
-        function filtrarNoticias(categoria) {
-            document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('ativo'));
-            event.target.classList.add('ativo');
-            renderizarNoticias(todasNoticias.slice(5), categoria);
         }
 
         // --- 4. PODCASTS FINANCEIROS ---
@@ -665,7 +626,8 @@
             { titulo: "WSJ Tech", imagem: "https://i.scdn.co/image/ab6765630000ba8aa2316e64259b58da50302b18", link: "https://music.youtube.com/search?q=wall+street+journal+tech+podcast" },
             { titulo: "Do Zero ao Topo", imagem: "https://i.scdn.co/image/ab6765630000ba8a7988350616b3f7bf9c85df36", link: "https://music.youtube.com/search?q=podcast+do+zero+ao+topo" },
             { titulo: "Touros e Ursos", imagem: "https://i.scdn.co/image/ab6765630000ba8a230f3c5f4039e2a44df7da7a", link: "https://music.youtube.com/search?q=podcast+touros+e+ursos" },
-            { titulo: "NerdCash", imagem: "https://jovemnerd.com.br/wp-content/uploads/2019/01/nerdcash_feed-1.jpg", link: "https://music.youtube.com/search?q=podcast+nerdcash" }
+            { titulo: "NerdCash", imagem: "https://jovemnerd.com.br/wp-content/uploads/2019/01/nerdcash_feed-1.jpg", link: "https://music.youtube.com/search?q=podcast+nerdcash" },
+            { titulo: "O Assunto", imagem: "https://i.scdn.co/image/ab6765630000ba8a7ef204b6bd2855110eb04fc5", link: "https://music.youtube.com/search?q=podcast+o+assunto" }
         ];
 
         function renderizarPodcasts() {
@@ -686,5 +648,3 @@
     </script>
 </body>
 </html>
-
-
