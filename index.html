@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Financeiro Global</title>
+    <style>
+        /* --- TEMA E LAYOUT GERAL --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0b0e14;
+            color: #f9f9f9;
+            margin: 0 auto; /* Centraliza em telas muito grandes */
+            padding: 15px; 
+            overflow-x: hidden;
+            max-width: 100%; /* Padrão Mobile */
+        }
+
+        /* --- RESPONSIVIDADE PARA NOTEBOOKS E MONITORES (PC) --- */
+        @media (min-width: 768px) {
+            body { 
+                padding: 40px; 
+                max-width: 1400px; /* Limite máximo para não esticar em monitores ultrawide */
+            }
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #f9f9f9;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (min-width: 768px) {
+            h1 { font-size: 2.2rem; margin-bottom: 30px; }
+        }
+
+        h2.section-title {
+            font-size: 1.3rem;
+            margin: 30px 0 15px 0;
+            color: #cacaca;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+
+        @media (min-width: 768px) {
+            h2.section-title { font-size: 1.6rem; margin: 50px 0 25px 0; }
+        }
+
+        /* --- GALERIA TOPO (CARROSSEL COM SWIPE) --- */
+        .hero-container {
+            position: relative;
+            width: 100%;
+            height: 340px; /* Altura Mobile */
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            background: #1e212d;
+            touch-action: pan-y; 
+            cursor: grab; /* Indica que pode ser arrastado no PC */
+        }
+
+        .hero-container:active {
+            cursor: grabbing;
+        }
+
+        @media (min-width: 768px) {
+            .hero-container { 
+                height: 480px; /* Altura Maior no Notebook */
+                border-radius: 16px;
+                margin-bottom: 40px;
+            }
+        }
+
+        .hero-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: transform;
+        }
+
+        .hero-slide {
+            flex: 0 0 100%; 
+            width: 100%;
+            height: 100%;
+            position: relative;
+            text-decoration: none;
+            color: white;
+            display: block;
+            user-select: none; /* Evita selecionar a imagem ao arrastar no PC */
+            -webkit-user-drag: none;
+        }
+
+        .hero-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            pointer-events: none; /* Previne bugs de drag no PC */
+        }
+
+        .hero-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(11, 14, 20, 0.95) 0%, rgba(11, 14, 20, 0.4) 60%, rgba(11, 14, 20, 0) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 25px;
+            padding-bottom: 40px; 
+            box-sizing: border-box;
+            pointer-events: none;
+        }
+
+        @media (min-width: 768px) {
+            .hero-overlay { padding: 40px; padding-bottom: 50px; }
+        }
+
+        .hero-tag {
+            background: #27ae60;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            width: max-content;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .hero-title {
+            font-size: 1.4rem;
+            margin: 0 0 5px 0;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.9);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .hero-title { 
+                font-size: 2.5rem; /* Título gigante no PC */
+                max-width: 80%; /* Para não encostar muito na borda direita */
+            }
+        }
+
+        /* Indicadores (Bolinhas) */
+        .hero-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            z-index: 3;
+        }
+
+        @media (min-width: 768px) {
+            .hero-dots { bottom: 20px; gap: 10px; }
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #3498db;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        /* --- FILTROS (BOTÕES) --- */
+        .filtros {
+            display: flex;
+            overflow-x: auto; 
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 5px;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .filtros::-webkit-scrollbar { display: none; }
+
+        .btn-filtro {
+            background-color: #1e212d;
+            color: #bdc3c7;
+            border: 1px solid #2b2f3e;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.8rem;
+            white-space: nowrap; 
+            transition: all 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .filtros { gap: 15px; margin-bottom: 30px; }
+            .btn-filtro { padding: 10px 20px; font-size: 1rem; }
+        }
+
+        .btn-filtro:hover, .btn-filtro.ativo {
+            background-color: #3498db;
+            color: #fff;
+            border-color: #2980b9;
+        }
+
+        /* --- GRIDS (CATÁLOGOS) --- */
+        .grid-noticias {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 15px;
+        }
+
+        .grid-podcasts {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 12px;
+        }
+
+        @media (min-width: 768px) {
+            .grid-noticias { 
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Cards mais largos no PC */
+                gap: 25px; 
+            }
+            .grid-podcasts { 
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Podcasts maiores no PC */
+                gap: 20px; 
+            }
+        }
+
+        /* --- ESTILO BASE DOS TILES (CARDS) --- */
+        .tile {
+            position: relative;
+            background: #1e212d;
+            overflow: hidden;
+            text-decoration: none;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid #2b2f3e;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .tile:active, .tile:hover {
+            border-color: #3498db;
+        }
+
+        @media (min-width: 768px) {
+            .tile:hover {
+                transform: translateY(-8px); /* Levanta mais no PC */
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+                z-index: 10;
+            }
+        }
+
+        .tile.noticia { aspect-ratio: 16 / 9; border-radius: 10px; }
+        .tile.podcast { aspect-ratio: 1 / 1; border-radius: 12px; }
+
+        .tile-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .tile.noticia:hover .tile-bg, .tile.noticia:active .tile-bg { opacity: 1; }
+
+        .tile-overlay {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 90%;
+            background: linear-gradient(to top, rgba(11, 14, 20, 0.95) 0%, rgba(11, 14, 20, 0.6) 40%, rgba(11, 14, 20, 0) 100%);
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        /* --- EFEITO: FROSTED GLASS INFERIOR COM LOGO --- */
+        .fonte-frosted {
+            position: absolute;
+            bottom: 0; 
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: rgba(11, 14, 20, 0.5); 
+            backdrop-filter: blur(4px); 
+            -webkit-backdrop-filter: blur(4px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 3;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .tile.noticia:hover .fonte-frosted, .tile.noticia:active .fonte-frosted {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tile.noticia:hover .tile-overlay, .tile.noticia:active .tile-overlay,
+        .tile.noticia:hover .tile-content, .tile.noticia:active .tile-content {
+            opacity: 0; 
+        }
+
+        .fonte-logo {
+            max-height: 35px; 
+            max-width: 110px;
+            object-fit: contain;
+            filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.8));
+        }
+
+        .fonte-texto-fallback {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #fff;
+            display: none; 
+            letter-spacing: 1px;
+        }
+
+        .ler-materia-btn {
+            font-size: 0.65rem;
+            color: #3498db;
+            margin-top: 8px;
+            text-transform: uppercase;
+            font-weight: bold;
+            background: rgba(52, 152, 219, 0.15);
+            padding: 4px 10px;
+            border-radius: 4px;
+            border: 1px solid rgba(52, 152, 219, 0.4);
+        }
+
+        /* --- CONTEÚDO DE TEXTO --- */
+        .tile-content {
+            position: relative;
+            padding: 12px;
+            z-index: 2;
+            width: 100%;
+            transition: opacity 0.2s ease;
+        }
+
+        @media (min-width: 768px) {
+            .tile-content { padding: 18px; } /* Mais respiro interno nos cards no PC */
+        }
+
+        .tile.noticia .tile-content h3 {
+            margin: 0 0 5px 0;
+            font-size: 0.95rem;
+            line-height: 1.35;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            font-weight: 600;
+        }
+
+        @media (min-width: 768px) {
+            .tile.noticia .tile-content h3 { font-size: 1.1rem; }
+        }
+
+        .data {
+            font-size: 0.65rem;
+            color: #bdc3c7;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .loading {
+            color: #3498db;
+            font-style: italic;
+            font-size: 0.9rem;
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>📈 Terminal de Mercados</h1>
+
+    <!-- Galeria Principal (Carrossel com Swipe Real para Mouse e Touch) -->
+    <div class="hero-container" id="hero-gallery">
+        <div class="hero-track" id="hero-track">
+            <div style="padding: 30px; color: #7f8c8d; width: 100%; text-align: center; margin-top: 100px;">
+                Buscando manchetes globais...
+            </div>
+        </div>
+        <div class="hero-dots" id="hero-dots"></div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filtros">
+        <button class="btn-filtro ativo" onclick="filtrarNoticias('tudo')">Visão Global</button>
+        <button class="btn-filtro" onclick="filtrarNoticias('pt')">🇧🇷 Ações & BR</button>
+        <button class="btn-filtro" onclick="filtrarNoticias('en')">🇺🇸 Wall Street & Cripto</button>
+    </div>
+
+    <!-- Seção de Notícias (16:9) -->
+    <h2 class="section-title">Últimas Atualizações</h2>
+    <div id="grid-noticias" class="grid-noticias">
+        <p class="loading">Sincronizando com agências financeiras...</p>
+    </div>
+
+    <!-- Seção de Podcasts (1:1) -->
+    <h2 class="section-title">Podcasts Essenciais</h2>
+    <div id="grid-podcasts" class="grid-podcasts">
+        <!-- Renderizado via JS -->
+    </div>
+
+    <script>
+        // --- 1. CONFIGURAÇÃO DE FEEDS ---
+        const feeds = [
+            { url: 'https://www.moneytimes.com.br/feed/', lang: 'pt' },
+            { url: 'https://br.investing.com/rss/market_overview.rss', lang: 'pt' },
+            { url: 'https://finance.yahoo.com/news/rssindex', lang: 'en' },
+            { url: 'https://www.coindesk.com/arc/outboundfeeds/rss/', lang: 'en' }
+        ];
+
+        let todasNoticias = [];
+        let heroSlidesCount = 0;
+
+        const fallbackImages = [
+            'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=600',
+            'https://images.unsplash.com/photo-1590283603385-18ffb2a40c27?auto=format&fit=crop&q=80&w=600',
+            'https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&q=80&w=600'
+        ];
+
+        function extrairImagem(item) {
+            if (item.thumbnail) return item.thumbnail;
+            if (item.enclosure && item.enclosure.link) return item.enclosure.link;
+            const imgRegex = /<img[^>]+src="([^">]+)"/g;
+            const match = imgRegex.exec(item.content || item.description);
+            if (match) return match[1];
+            return fallbackImages[Math.floor(Math.random() * fallbackImages.length)];
+        }
+
+        async function carregarFeeds() {
+            try {
+                const promessas = feeds.map(feed => 
+                    fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if(data.status === 'ok' && data.items) {
+                                return data.items.map(item => ({...item, lang: feed.lang}));
+                            }
+                            return [];
+                        })
+                        .catch(err => [])
+                );
+
+                const resultados = await Promise.all(promessas);
+                todasNoticias = resultados.flat();
+                todasNoticias.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+
+                if(todasNoticias.length > 0) {
+                    renderizarHero(todasNoticias.slice(0, 5)); 
+                    renderizarNoticias(todasNoticias.slice(5, 25), 'tudo');
+                } else {
+                    document.getElementById('grid-noticias').innerHTML = '<p class="loading">Não foi possível carregar as notícias.</p>';
+                    document.getElementById('hero-track').innerHTML = '';
+                }
+            } catch (error) {
+                console.error("Erro geral:", error);
+            }
+        }
+
+        // --- 2. LÓGICA DO CARROSSEL (SUPORTA TOUCH E MOUSE NO PC) ---
+        let currentSlideIndex = 0;
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let isDragging = false;
+        
+        function renderizarHero(noticiasDestaque) {
+            const track = document.getElementById('hero-track');
+            const dotsContainer = document.getElementById('hero-dots');
+            
+            track.innerHTML = '';
+            dotsContainer.innerHTML = '';
+            heroSlidesCount = noticiasDestaque.length;
+            currentSlideIndex = 0;
+
+            noticiasDestaque.forEach((item, index) => {
+                const img = extrairImagem(item);
+                let domain = 'Mercados';
+                try { domain = new URL(item.link).hostname.replace('www.', '').split('.')[0].toUpperCase(); } catch(e) {}
+
+                const slide = document.createElement('a');
+                slide.href = item.link;
+                slide.target = "_blank";
+                slide.className = 'hero-slide';
+                slide.draggable = false; // Evita conflito ao arrastar no PC
+                
+                // Previne o clique de abrir o link se o usuário estava apenas arrastando
+                slide.addEventListener('click', (e) => {
+                    if (isDragging) e.preventDefault();
+                });
+
+                slide.innerHTML = `
+                    <img src="${img}" class="hero-bg" alt="Destaque">
+                    <div class="hero-overlay">
+                        <span class="hero-tag">${domain} • ${item.lang === 'en' ? 'EN' : 'PT'}</span>
+                        <h2 class="hero-title">${item.title}</h2>
+                    </div>
+                `;
+                track.appendChild(slide);
+
+                const dot = document.createElement('div');
+                dot.className = `dot ${index === 0 ? 'active' : ''}`;
+                dot.onclick = () => irParaSlide(index);
+                dotsContainer.appendChild(dot);
+            });
+
+            const heroContainer = document.getElementById('hero-gallery');
+            
+            // Eventos Mobile (Touch)
+            heroContainer.addEventListener('touchstart', (e) => handleDragStart(e.changedTouches[0].screenX), {passive: true});
+            heroContainer.addEventListener('touchend', (e) => handleDragEnd(e.changedTouches[0].screenX), {passive: true});
+
+            // Eventos PC (Mouse)
+            heroContainer.addEventListener('mousedown', (e) => handleDragStart(e.screenX));
+            heroContainer.addEventListener('mouseup', (e) => handleDragEnd(e.screenX));
+            heroContainer.addEventListener('mouseleave', (e) => {
+                if (touchStartX !== 0) handleDragEnd(e.screenX);
+            });
+        }
+
+        function handleDragStart(posX) {
+            touchStartX = posX;
+            isDragging = false;
+        }
+
+        function handleDragEnd(posX) {
+            touchEndX = posX;
+            handleSwipe();
+            touchStartX = 0; // Reseta para evitar loops
+        }
+
+        function handleSwipe() {
+            const swipeThreshold = 50; 
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                isDragging = true; // Confirma que foi um arrasto e não um clique
+                
+                if (diff > 0) { // Deslizou para a Esquerda
+                    if (currentSlideIndex < heroSlidesCount - 1) irParaSlide(currentSlideIndex + 1);
+                    else irParaSlide(0); 
+                } else { // Deslizou para a Direita
+                    if (currentSlideIndex > 0) irParaSlide(currentSlideIndex - 1);
+                    else irParaSlide(heroSlidesCount - 1); 
+                }
+            } else {
+                isDragging = false; // Foi apenas um clique
+            }
+        }
+
+        function irParaSlide(index) {
+            currentSlideIndex = index;
+            const track = document.getElementById('hero-track');
+            const dots = document.querySelectorAll('.dot');
+            
+            track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+            
+            dots.forEach(d => d.classList.remove('active'));
+            if(dots[currentSlideIndex]) dots[currentSlideIndex].classList.add('active');
+        }
+
+        // --- 3. RENDERIZA O GRID DE NOTÍCIAS ---
+        function renderizarNoticias(noticias, filtro) {
+            const container = document.getElementById('grid-noticias');
+            container.innerHTML = ''; 
+
+            let lista = noticias;
+            if (filtro !== 'tudo') {
+                lista = todasNoticias.filter(n => n.lang === filtro).slice(0, 20);
+            }
+
+            if(lista.length === 0) {
+                container.innerHTML = '<p class="loading">Nenhuma notícia encontrada para este filtro.</p>';
+                return;
+            }
+
+            lista.forEach(item => {
+                const imageUrl = extrairImagem(item);
+                let dataFormatada = "";
+                try {
+                    const dataObj = new Date(item.pubDate);
+                    if(!isNaN(dataObj.getTime())) {
+                        dataFormatada = dataObj.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute:'2-digit' });
+                    }
+                } catch(e) {}
+
+                let domainText = 'FINANÇAS';
+                let domainUrl = 'finance.yahoo.com'; 
+                try {
+                    const urlObj = new URL(item.link);
+                    domainUrl = urlObj.hostname;
+                    domainText = domainUrl.replace('www.', '').split('.')[0].toUpperCase();
+                } catch(e) {}
+
+                const logoUrl = `https://logo.clearbit.com/${domainUrl}`;
+
+                const tile = document.createElement('a');
+                tile.href = item.link;
+                tile.target = "_blank";
+                tile.className = 'tile noticia';
+
+                tile.innerHTML = `
+                    <img src="${imageUrl}" class="tile-bg" alt="Fundo">
+                    
+                    <div class="fonte-frosted">
+                        <img src="${logoUrl}" class="fonte-logo" alt="${domainText}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="fonte-texto-fallback">${domainText}</span>
+                        <div class="ler-materia-btn">Acessar Matéria</div>
+                    </div>
+
+                    <div class="tile-overlay"></div>
+                    <div class="tile-content">
+                        <h3>${item.title}</h3>
+                        <p class="data">
+                            <span>${dataFormatada}</span>
+                            <span>${item.lang === 'en' ? '🇺🇸' : '🇧🇷'}</span>
+                        </p>
+                    </div>
+                `;
+                container.appendChild(tile);
+            });
+        }
+
+        function filtrarNoticias(categoria) {
+            document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('ativo'));
+            event.target.classList.add('ativo');
+            renderizarNoticias(todasNoticias.slice(5), categoria);
+        }
+
+        // --- 4. PODCASTS FINANCEIROS ---
+        const podcasts = [
+            { titulo: "Stock Pickers", imagem: "https://i.scdn.co/image/ab6765630000ba8aa41cd9912bc0b78df1ff23b2", link: "https://music.youtube.com/search?q=podcast+stock+pickers" },
+            { titulo: "WSJ Tech", imagem: "https://i.scdn.co/image/ab6765630000ba8aa2316e64259b58da50302b18", link: "https://music.youtube.com/search?q=wall+street+journal+tech+podcast" },
+            { titulo: "Do Zero ao Topo", imagem: "https://i.scdn.co/image/ab6765630000ba8a7988350616b3f7bf9c85df36", link: "https://music.youtube.com/search?q=podcast+do+zero+ao+topo" },
+            { titulo: "Touros e Ursos", imagem: "https://i.scdn.co/image/ab6765630000ba8a230f3c5f4039e2a44df7da7a", link: "https://music.youtube.com/search?q=podcast+touros+e+ursos" },
+            { titulo: "NerdCash", imagem: "https://jovemnerd.com.br/wp-content/uploads/2019/01/nerdcash_feed-1.jpg", link: "https://music.youtube.com/search?q=podcast+nerdcash" }
+        ];
+
+        function renderizarPodcasts() {
+            const container = document.getElementById('grid-podcasts');
+            podcasts.forEach(pod => {
+                const tile = document.createElement('a');
+                tile.href = pod.link;
+                tile.target = "_blank";
+                tile.className = 'tile podcast';
+                tile.innerHTML = `<img src="${pod.imagem}" class="tile-bg" style="opacity: 1;" alt="${pod.titulo}">`;
+                container.appendChild(tile);
+            });
+        }
+
+        renderizarPodcasts();
+        carregarFeeds();
+
+    </script>
+</body>
+</html>
+
+
